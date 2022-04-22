@@ -1,71 +1,60 @@
 var text = '';
-function MealSearch (){
-    text = document.getElementById('your-meal').value;
-    Mealconnect(text)
+function findMeal() {
+    text = document.getElementById('meal-search').value;
+    connectMeal(text)
 }
 
-function Mealconnect(text) {
+function connectMeal(text) {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${text}`)
-    .then(res=> res.json() )
-    .then(data=> TheMeal(data));
+        .then(res => res.json())
+        .then(data => loadMeal(data));
 
 }
 
-Mealconnect();
+connectMeal();
 
-function TheMeal(data) {
+function loadMeal(data) {
 
-    console.log(data.meals);
-    
-    var container = document.getElementById('search-container');
+    console.table(data.meals[0]);
 
-    for (var a=0; a < 5; a++){
+    var container = document.getElementById('main-container');
 
-     var newDiv = document.createElement("div");
+    //   for (var a=0; a<data.meas.length; a++){
 
-     newDiv.innerHTML = `<h3> Name: ${data.meals.strMeal} </H3>
-                        <p>MealID: ${data.meals.idMeal} </p>
-                        <p>category: ${data.meal.strCategory}</p>
-                        <p>Img: ${data.meal.strMealThumb}</p>
-                        <p> Instructions: ${data.meal.strInstructions}</p>
-                        <button onclick="moremeals()" id= btn-country class='btn-style'>more meals ... </button>
-                         `; 
-                         
+    var imgLink = data.meals[0].strMealThumb;
+    var cat = data.meals[0].strCategory;
+    var title = data.meals[0].strMeal;
+    var Instruction = data.meals[0].strInstructions
 
-   
-    newDiv.classList.add('inner-style');
-    container.appendChild(newDiv);
-}
 
-}
 
-function moremeals(){
-        var meal= document.getElementById("search-container").value;
-        var url2 = `https://www.themealdb.com/api/json/v1/1/search.php?s=${text}`
-        console.log(url2)
-    
-        fetch(url2)
+    container.innerHTML = `<p><b> ${title} </b></p>
+                         <img src="${imgLink}" <br/>
+                         <p> Category: ${cat} </p>
+                         <p> Instructions: ${Instruction}</p>
+                         <button onclick="showAll()"> Show All </button>`;
+
+
+    function showAll() {
+        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${text}`)
             .then(res => res.json())
-            .then(data => Final(data))
+            .then(data => loadMeal(data));
     }
-    
-    function Final(data) {
-        console.log(data.meal);
-        
-        var finalDiv = document.getElementById("Rest-countries")
-        for (var a = 0; a < data.meal.length; a++) {
-    
-            var LastDiv = document.createElement('div4');
-            LastDiv.innerHTML = `<h3> Name: ${data.meals.strMeal} </H3>
-            <p>MealID: ${data.meals.idMeal} </p>
-            <p>category: ${data.meal.strCategory}</p>
-            <p>Img: ${data.meal.strMealThumb}</p>
-            <p> Instructions: ${data.meal.strInstructions}</p>
-            <button onclick="moremeals()" id= btn-country class='btn-style'>more meals ... </button>
-             `; 
-             
-    
-            LastDiv.classList.add("Final-style");
-            finalDiv.appendChild(LastDiv);
-        }
+
+
+    function showAll() {
+        var newContainer = document.getElementById("new-container");
+
+        newContainer.innerHTML = `<p><b> ${title} </b></p>
+    <img src="${imgLink}" <br/>
+    <p> Category: ${cat} </p>
+    <p> Instructions: ${Instruction}</p>
+    <button onclick="showAll()"> Show All </button>`;
+
+
+        container.appendChild(newDiv);
+
+    }
+
 }
+
