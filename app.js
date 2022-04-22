@@ -19,7 +19,7 @@ function loadMeal(data) {
 
     var container = document.getElementById('main-container');
 
-    //   for (var a=0; a<data.meas.length; a++){
+
 
     var imgLink = data.meals[0].strMealThumb;
     var cat = data.meals[0].strCategory;
@@ -56,5 +56,10 @@ function loadMeal(data) {
 
     }
 
+}
+
+const clearAll = () => {
+    searchedMeals.textContent = 
+    "search result.value=";
 }
 
